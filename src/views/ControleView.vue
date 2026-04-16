@@ -100,6 +100,7 @@ const totalPorCategoria = computed(() => ({
         id="nome-edicao"
         v-model="produtoEditando.nome"
         placeholder="Nome"
+        
       />
 
       <label for="preco-edicao">Preço</label>
