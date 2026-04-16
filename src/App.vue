@@ -1,47 +1,62 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import { RouterLink, RouterView } from "vue-router"
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+  <div class="container py-4">
+    <nav class="menu">
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
+      <RouterLink to="/">
+        Início
+      </RouterLink>
 
-  <main>
-    <TheWelcome />
-  </main>
+      <RouterLink to="/cadastro">
+        Cadastro
+      </RouterLink>
+
+      <RouterLink to="/controle">
+        Controle
+      </RouterLink>
+     
+      <RouterLink to="/cardapio">
+        Cardápio
+      </RouterLink>
+
+    </nav>
+      <RouterView />
+  </div>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
+.titulo{
+  text-align:center;
+  margin-top:20px;
+  color:#16a34a;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+.menu{
+  display:flex;
+  justify-content:center;
+  gap:20px;
+  margin:20px 0;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+.menu a{
+  text-decoration:none;
+  color:#333;
+  font-weight:500;
+  padding:6px 12px;
+  border-radius:6px;
 }
+
+.menu a:hover{
+  background:#f0fdf4;
+  color:#16a34a;
+}
+
+.router-link-active{
+  background:#16a34a;
+  color:white;
+}
+
 </style>
