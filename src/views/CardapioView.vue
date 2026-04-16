@@ -1,5 +1,5 @@
 <script setup>
-import { produtos } from "../store/produtos"
+import { produtos } from "@modules/store/produtos"
 </script>
 <template>
   <section>
@@ -7,6 +7,7 @@ import { produtos } from "../store/produtos"
 
     <div v-if="produtos.length" class="grid">
       <article
+
         v-for="produto in produtos"
         :key="produto.id"
         class="card"

@@ -1,7 +1,7 @@
 <script setup>
 import { reactive } from "vue"
-import { formatarMoeda } from "../utils/formatarMoeda"
-import { adicionarProduto } from "../store/produtos"
+import { formatarMoeda } from "@formatarMoeda/utils/formatarMoeda"
+import { adicionarProduto } from "@modules/store/produtos"
 
 const categorias = [
   { value: "", label: "Selecione uma categoria" },

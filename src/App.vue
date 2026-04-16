@@ -1,5 +1,14 @@
 <script setup>
 import { RouterLink, RouterView } from "vue-router"
+import { useStore } from 'vuex'
+const store = useStore()
+
+const items = computed(() =>
+    store.getters['cart/items'])
+
+function addItem(item) {
+    store.dispatch('cart/addToCart', item)
+}
 </script>
 
 <template>

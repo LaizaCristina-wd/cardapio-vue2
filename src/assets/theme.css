@@ -1,0 +1,39 @@
+:root,
+[data-bs-theme='dark'] {
+    /* Paleta marrom + laranja "pizza" */
+    --pn-bg: #14100c;
+    --pn-bg-2: #1b1611;
+    --pn-panel: #231c15;
+    --pn-panel-2: #2a2219;
+    --pn-border: #3a2e22;
+    --pn-border-soft: #2f2619;
+    --pn-text: #f5efe6;
+    --pn-text-muted: #a7998a;
+    --pn-text-dim: #78695a;
+
+    --pn-orange: #f59e0b;
+    --pn-orange-2: #f97316;
+    --pn-orange-soft: rgba(245, 158, 11, 0.12);
+
+    /* Semânticas para pills/status */
+    --pn-green: #22c55e;
+    --pn-green-soft: rgba(34, 197, 94, 0.14);
+    --pn-yellow: #eab308;
+    --pn-red: #ef4444;
+    --pn-blue: #38bdf8;
+
+    --pn-sidebar-w: 240px;
+    --pn-radius: 14px;
+    --pn-radius-sm: 10px;
+    --pn-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+
+    /* Sobrescrita de variáveis do Bootstrap 5.3 */
+    --bs-body-bg: var(--pn-bg);
+    --bs-body-color: var(--pn-text);
+    --bs-border-color: var(--pn-border-soft);
+    --bs-primary: var(--pn-orange);
+    --bs-primary-rgb: 245, 158, 11;
+    --bs-link-color: var(--pn-orange);
+    --bs-secondary-bg: var(--pn-panel-2);
+    --bs-tertiary-bg: var(--pn-panel);
+}

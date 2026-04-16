@@ -1,6 +1,6 @@
 <script setup>
 import { reactive, computed, ref } from "vue"
-import { formatarMoeda } from "../utils/formatarMoeda"
+import { formatarMoeda } from "@formatarMoeda/utils/formatarMoeda"
 import {
   produtos,
   editarProduto,
@@ -100,7 +100,7 @@ const totalPorCategoria = computed(() => ({
         id="nome-edicao"
         v-model="produtoEditando.nome"
         placeholder="Nome"
-        
+
       />
 
       <label for="preco-edicao">Preço</label>
