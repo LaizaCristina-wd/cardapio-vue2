@@ -1,38 +1,44 @@
 :root,
 [data-bs-theme='dark'] {
-    /* Paleta marrom + laranja "pizza" */
-    --pn-bg: #14100c;
-    --pn-bg-2: #1b1611;
-    --pn-panel: #231c15;
-    --pn-panel-2: #2a2219;
-    --pn-border: #3a2e22;
-    --pn-border-soft: #2f2619;
-    --pn-text: #f5efe6;
-    --pn-text-muted: #a7998a;
-    --pn-text-dim: #78695a;
+   /*Paleta de cores*/
+    --pn-bg: #000b1a;           
+    --pn-bg-2: #001529;        
+    --pn-panel: #001d3d;        
+    --pn-panel-2: #002855;      
+    
+    /* Bordas e Divisores */
+    --pn-border: #003566;        
+    --pn-border-soft: #001d3d;   
 
-    --pn-orange: #f59e0b;
-    --pn-orange-2: #f97316;
-    --pn-orange-soft: rgba(245, 158, 11, 0.12);
+    /* Tipografia: Off-white e tons de prata para leitura no escuro */
+    --pn-text: #e0e1dd;       
+    --pn-text-muted: #778da9;  
+    --pn-text-dim: #415a77;      
 
-    /* Semânticas para pills/status */
-    --pn-green: #22c55e;
-    --pn-green-soft: rgba(34, 197, 94, 0.14);
-    --pn-yellow: #eab308;
-    --pn-red: #ef4444;
-    --pn-blue: #38bdf8;
+    /* A cor da Realeza: Dourado Nobre */
+    --pn-orange: #c3a343;     
+    --pn-orange-2: #9a7e32;      
+    --pn-orange-soft: rgba(195, 163, 67, 0.15);
 
-    --pn-sidebar-w: 240px;
-    --pn-radius: 14px;
+    /* Cores de Status (Semânticas) */
+    --pn-green: #2dce89;         
+    --pn-green-soft: rgba(45, 206, 137, 0.15);
+    --pn-yellow: #ffcb39;       
+    --pn-red: #f5365c;        
+    --pn-blue: #5e72e4;          
+
+    /* Estrutura e Efeitos */
+    --pn-sidebar-w: 260px;
+    --pn-radius: 16px;          
     --pn-radius-sm: 10px;
-    --pn-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    --pn-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
 
-    /* Sobrescrita de variáveis do Bootstrap 5.3 */
+    /* Sobrescrita Bootstrap 5.3 */
     --bs-body-bg: var(--pn-bg);
     --bs-body-color: var(--pn-text);
     --bs-border-color: var(--pn-border-soft);
     --bs-primary: var(--pn-orange);
-    --bs-primary-rgb: 245, 158, 11;
+    --bs-primary-rgb: 195, 163, 67;
     --bs-link-color: var(--pn-orange);
     --bs-secondary-bg: var(--pn-panel-2);
     --bs-tertiary-bg: var(--pn-panel);

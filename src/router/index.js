@@ -1,29 +1,22 @@
-import { createRouter, createWebHistory } from "vue-router"
-import HomeView from "../views/HomeView.vue"
-import CadastroView from "../views/CadastroView.vue"
-import ControleView from "../views/ControleView.vue"
-import CardapioView from "../views/CardapioView.vue"
+import { createRouter, createWebHistory } from "vue-router";
+
+const HomeView = () => import('@/views/HomeView.vue')
+const LoginView = () => import('@/views/LoginView.vue')
 
 const routes = [
   {
-    path: "/",
-    name: "home",
+    path: '/',
+    redirect: '/login'
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: LoginView
+  },
+  {
+    path: '/home',
+    name: 'home',
     component: HomeView
-  },
-  {
-    path: "/cadastro",
-    name: "cadastro",
-    component: CadastroView
-  },
-  {
-    path: "/controle",
-    name: "controle",
-    component: ControleView
-  },
-  { 
-    path: "/cardapio",
-    name: "cardapio",
-    component: CardapioView 
   }
 ]
 
