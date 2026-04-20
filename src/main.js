@@ -5,7 +5,9 @@ import App from './App.vue'
 import router from './router'
 import './assets/theme.css'
 import store from './store'
+import { NOTIFY } from './constants'
 createApp(App)
+App.use(NOTIFY)
 .use(router)
 .use(store)
 .mount('#app')
