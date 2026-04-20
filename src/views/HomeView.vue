@@ -1,15 +1,13 @@
 
 <script setup>
-import { ref, inject } from 'vue'
+import { ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
-import { NOTIFY } from '@/constants'
 import logo from '@/assets/images/logos/logoSr.png'
 
 const store = useStore()
 const router = useRouter()
 const route = useRoute()
-const notify = inject('notify')
 
 const username = ref('')
 const error = ref('')
@@ -23,12 +21,12 @@ function submit() {
   }
 
   store.dispatch('auth/login', { username: name })
-  notify(`Bem-vindo, ${name}!`, NOTIFY.SUCCESS)
 
   const raw = route.query.redirect
   const isSafeInternal = typeof raw === 'string' && /^\/(?!\/)/.test(raw)
   router.push(isSafeInternal ? raw : { name: 'dashboard' })
 }
+
 </script>
 
 <template><div class="sr-root">
