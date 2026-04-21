@@ -8,7 +8,6 @@ import logo from '@/assets/images/logos/logoSr.png'
 const store = useStore()
 const router = useRouter()
 const route = useRoute()
-
 const username = ref('')
 const error = ref('')
 
@@ -24,22 +23,18 @@ function submit() {
 
   const raw = route.query.redirect
   const isSafeInternal = typeof raw === 'string' && /^\/(?!\/)/.test(raw)
-  router.push(isSafeInternal ? raw : { name: 'dashboard' })
+  router.push(isSafeInternal ? raw : { name: 'Overview' })
 }
-
 </script>
 
 <template><div class="sr-root">
-
    
     <div class="sr-bg-orb sr-orb-1"></div>
     <div class="sr-bg-orb sr-orb-2"></div>
     <div class="sr-bg-orb sr-orb-3"></div>
     <div class="sr-grain"></div>
 
-    <div class="sr-page">
-
-     
+    <div class="sr-page">     
       <header class="sr-header">
         <div class="sr-header-inner">
           <div class="sr-crown-line"></div>
@@ -51,7 +46,6 @@ function submit() {
         </div>
       </header>
 
-   
       <div class="sr-logo-wrap">
         <div class="sr-logo-ring">
           <img :src="logo" class="sr-logo" alt="Selo Real" />
@@ -59,7 +53,6 @@ function submit() {
         <div class="sr-logo-shine"></div>
       </div>
 
-     
       <p class="sr-mission">
         Nossa missão é produzir alimentos com o padrão de qualidade Selo Real,
         honrando o compromisso de levar o melhor à mesa de nossos clientes e parceiros

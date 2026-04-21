@@ -5,7 +5,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import sidebar from '../components/NavBar.vue'
+import axios from 'axios'
 
 // Recharts equivalente para Vue → use vue-chartjs
 import { Bar } from 'vue-chartjs'
@@ -32,11 +32,8 @@ const router = useRouter()
 // ─────────────────────────────────────────────
 const canalAtivo   = ref('todos')
 const filtroOrdem  = ref('todos')
-const activeNav    = ref('overview')
+const activeNav    = ref('allview')
 
-// ─────────────────────────────────────────────
-// Dados fictícios de KPIs (substitua por store/API)
-// ─────────────────────────────────────────────
 const kpiData = {
   todos:  { vendas: 'R$ 84.320', ticket: 'R$ 1.248', svLabel: 'Este mês • todos os canais', stLabel: 'Por pedido • todos os canais' },
   b2b:    { vendas: 'R$ 61.900', ticket: 'R$ 3.860', svLabel: 'Este mês • B2B Industrial',   stLabel: 'Por pedido • B2B' },
@@ -45,18 +42,34 @@ const kpiData = {
 
 const kpi = computed(() => kpiData[canalAtivo.value])
 
-// ─────────────────────────────────────────────
-// Dados fictícios de produtos (substitua por store/API)
-// ─────────────────────────────────────────────
-const produtos = ref([
-  { id: 1, emoji: '🍞', nome: 'Pão Francês',    categoria: 'Pães tradicionais', precoInd: 'R$0,45', precoVar: 'R$0,89', estoque: 'ok',  cor: 'br' },
-  { id: 2, emoji: '🥐', nome: 'Croissant Butter', categoria: 'Folhados',         precoInd: 'R$2,10', precoVar: 'R$4,50', estoque: 'mid', cor: 'pt' },
-  { id: 3, emoji: '🧁', nome: 'Cupcake Choco',  categoria: 'Confeitaria',        precoInd: 'R$3,20', precoVar: 'R$7,90', estoque: 'low', cor: 'cr' },
-  { id: 4, emoji: '🥖', nome: 'Baguete Rústica', categoria: 'Pães especiais',    precoInd: 'R$1,80', precoVar: 'R$3,90', estoque: 'ok',  cor: 'bf' },
-])
+const produtosIniciais = [
+  { id: 1, emoji: '🍞', nome: 'Pão Francês',     categoria: 'Pães tradicionais', precoInd: 'R$0,45', precoVar: 'R$0,89', estoque: 'ok',  cor: 'br' },
+  { id: 2, emoji: '🥐', nome: 'Croissant Butter', categoria: 'Congelados',        precoInd: 'R$2,10', precoVar: 'R$4,50', estoque: 'mid', cor: 'pt' },
+  { id: 3, emoji: '🧁', nome: 'Cupcake Choco',   categoria: 'Confeitaria',       precoInd: 'R$3,20', precoVar: 'R$7,90', estoque: 'low', cor: 'cr' },
+  { id: 4, emoji: '🥖', nome: 'Baguete Rústica',  categoria: 'Pães especiais',   precoInd: 'R$1,80', precoVar: 'R$3,90', estoque: 'ok',  cor: 'bf' },
+]
 
+const produtos    = ref([...produtosIniciais])
+const loading     = ref(false)
+const jaCarregou  = ref(false)
 const estoqueLabel = { ok: 'Estoque OK', mid: 'Estoque médio', low: 'Estoque baixo' }
 
+async function atualizarProdutos() {
+  if (jaCarregou.value) return
+  loading.value = true
+
+  try {
+    const { data } = await axios.get('/suggestions.json') // ← axios direto, sem service
+    const idsExistentes = new Set(produtos.value.map(p => p.id))
+    const novos = data.filter(p => !idsExistentes.has(p.id))
+    produtos.value = [...produtos.value, ...novos]
+    jaCarregou.value = true
+  } catch (err) {
+    console.error('Erro:', err.message)
+  } finally {
+    loading.value = false
+  }
+}
 // ─────────────────────────────────────────────
 // Produção (fictício — substitua por store/API)
 // ─────────────────────────────────────────────
@@ -125,22 +138,11 @@ const filteredOrders = computed(() => {
 // ─────────────────────────────────────────────
 const urgLabel = { alta: 'Alta', media: 'Média', baixa: 'Baixa' }
 
-const navItems = [
-  { key: 'overview',   label: 'Visão Geral',   badge: null },
-  { key: 'producao',   label: 'Produção',       badge: 3 },
-  { key: 'menu',       label: 'Gestão de Menu', badge: null },
-  { key: 'logistica',  label: 'Logística',      badge: null },
-  { key: 'relatorios', label: 'Relatórios',     badge: null },
-]
 
-function navTo(key) {
-  activeNav.value = key
-  // router.push({ name: key }) // descomente quando tiver rotas reais
-}
 
 // ─────────────────────────────────────────────
 // Lifecycle
-// ─────────────────────────────────────────────
+// ──────────────────────────────────────────────
 onMounted(() => {
   // store.dispatch('dashboard/fetchKpis')
   // store.dispatch('dashboard/fetchOrders')
@@ -153,8 +155,6 @@ onMounted(() => {
 ───────────────────────────────────────────── -->
 <template>
   <div class="db-root">
-
-    <sidebar />
 
     <main class="db-main">
 
@@ -247,7 +247,12 @@ onMounted(() => {
         <div class="card-box">
           <div class="box-header">
             <span class="box-title">Menu de Produtos</span>
-            <span class="box-action">Ver todos →</span>
+
+            <button class="btn-atualizar" :disabled="loading || jaCarregou" @click="atualizarProdutos">
+              <span v-if="loading">Carregando...</span>
+              <span v-else-if="jaCarregou">✓ Atualizado</span>
+              <span v-else>↻ Atualizar</span>
+            </button>
           </div>
           <div class="prod-grid">
             <div
@@ -568,6 +573,32 @@ onMounted(() => {
 .stock-badge--mid { background: rgba(255,203,57,.12);     color: var(--pn-yellow); }
 .stock-badge--low { background: rgba(245,54,92,.12);      color: var(--pn-red); }
 
+.menu-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.btn-atualizar {
+  background: transparent;
+  border: 1px solid #c3a343;
+  color: #c3a343;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all .2s;
+}
+
+.btn-atualizar:hover:not(:disabled) {
+  background: rgba(195, 163, 67, 0.1);
+}
+
+.btn-atualizar:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
 /* ── GRÁFICO ── */
 .chart-legend {
   display: flex;

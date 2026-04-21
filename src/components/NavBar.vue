@@ -18,14 +18,14 @@ const initials = computed(() => {
 
 
 // estado do menu (você pode ligar ao Vuex depois)
-const activeNav = ref('overview')
+const activeNav = ref('allview')
 
 const navItems = [
-  { key: 'overview', label: 'Visão Geral' },
-  { key: 'producao', label: 'Produção' },
-  { key: 'menu', label: 'Gestão de Menu' },
-  { key: 'logistica', label: 'Logística' },
-  { key: 'relatorios', label: 'Relatórios' },
+  { key: 'allview',   label: 'Visão Geral',    to: '/Overview'           },
+  { key: 'producao',  label: 'Produção',        to: '/producao'   },
+  { key: 'menu',      label: 'Gestão de Menu',  to: '/menu'       },
+  { key: 'logistica', label: 'Logística',       to: '/logistica'  },
+  { key: 'relatorios',label: 'Relatórios',      to: '/relatorios' },
 ]
 
 function navTo(key) {
@@ -52,23 +52,22 @@ function navTo(key) {
     <!-- NAV -->
     <nav class="sb-nav">
       <p class="sb-section">Principal</p>
-
-
-      <button
+       <RouterLink
         v-for="item in navItems"
         :key="item.key"
+        :to="item.to"
         class="sb-item"
-        :class="{ active: activeNav === item.key }"
-        @click="navTo(item.key)"
+        active-class="active"
+        exact-active-class="active"
       >
-       <svg v-if="item.key === 'overview'"   viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+       <svg v-if="item.key === 'allview'"   viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
           <svg v-if="item.key === 'producao'"   viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 0-14.14 0M4.93 19.07a10 10 0 0 0 14.14 0"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
           <svg v-if="item.key === 'menu'"       viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>
           <svg v-if="item.key === 'logistica'"  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 3h15v13H1zM16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
           <svg v-if="item.key === 'relatorios'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
 
         {{ item.label }}
-      </button>
+       </RouterLink>
     </nav>
 
     <!-- USER FOOTER (AQUI VAI O LOGIN DEPOIS) -->
@@ -149,6 +148,7 @@ function navTo(key) {
   text-align: left;
   transition: all .15s;
   margin-bottom: 2px;
+  text-decoration: none;
 }
 
 .sb-item svg { width: 15px; height: 15px; flex-shrink: 0; }

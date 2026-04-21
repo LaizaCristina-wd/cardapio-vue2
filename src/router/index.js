@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 const HomeView = () => import('@/views/HomeView.vue')
-const DashboardView = () => import('@/views/DashboardView.vue')
+const OverviewView = () => import('@/views/OverviewView.vue')
+const ProductionView = () => import('@/views/ProductionView.vue')
 
 const routes = [
   {
@@ -14,10 +15,17 @@ const routes = [
     component: HomeView
   },
   {
-  path: '/dashboard',
-  name: 'dashboard',
-  component: DashboardView
-}
+  path: '/Overview',
+  name: 'Overview',
+  component: OverviewView,
+   meta: { requiresSidebar: true } 
+}, 
+  {
+    path: '/producao',
+    name: 'producao',
+    component: ProductionView,
+     meta: { requiresSidebar: true }
+  },
  
 ]
 

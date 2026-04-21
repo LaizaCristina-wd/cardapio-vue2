@@ -1,0 +1,6 @@
+[
+  { "id": 5, "emoji": "🥨", "nome": "Pretzel Salgado",   "categoria": "Pães Especiais",   "precoInd": "R$1,50", "precoVar": "R$3,00", "estoque": "ok",  "cor": "br" },
+  { "id": 6, "emoji": "🍰", "nome": "Fatia de Bolo",     "categoria": "Confeitaria",      "precoInd": "R$4,00", "precoVar": "R$8,50", "estoque": "mid", "cor": "cr" },
+  { "id": 7, "emoji": "🥞", "nome": "Waffle Artesanal",  "categoria": "Congelados",       "precoInd": "R$2,50", "precoVar": "R$5,00", "estoque": "low", "cor": "pt" },
+  { "id": 8, "emoji": "🍩", "nome": "Donuts Glacê",      "categoria": "Confeitaria",      "precoInd": "R$3,00", "precoVar": "R$6,00", "estoque": "ok",  "cor": "bf" }
+]
