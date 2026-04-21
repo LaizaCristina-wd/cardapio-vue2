@@ -277,7 +277,7 @@ function submit() {
 }
 
 .sr-mission {
-  font-size: 0.9rem;
+  font-size: 16px;
   line-height: 1.7;
   color: var(--pn-text-muted);
   text-align: center;

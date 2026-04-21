@@ -6,6 +6,7 @@ import router from './router'
 import './assets/theme.css'
 import store from './store'
 
+store.dispatch('auth/initAuth')
 createApp(App)
 .use(router)
 .use(store)

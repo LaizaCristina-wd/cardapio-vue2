@@ -53,6 +53,7 @@ function navTo(key) {
     <nav class="sb-nav">
       <p class="sb-section">Principal</p>
 
+
       <button
         v-for="item in navItems"
         :key="item.key"
@@ -60,6 +61,12 @@ function navTo(key) {
         :class="{ active: activeNav === item.key }"
         @click="navTo(item.key)"
       >
+       <svg v-if="item.key === 'overview'"   viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          <svg v-if="item.key === 'producao'"   viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 0-14.14 0M4.93 19.07a10 10 0 0 0 14.14 0"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+          <svg v-if="item.key === 'menu'"       viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>
+          <svg v-if="item.key === 'logistica'"  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 3h15v13H1zM16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          <svg v-if="item.key === 'relatorios'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+
         {{ item.label }}
       </button>
     </nav>
@@ -83,6 +90,7 @@ function navTo(key) {
 
   </aside>
 </template>
+
 <style scoped>
 .db-sidebar {
   width: 210px;
@@ -91,7 +99,10 @@ function navTo(key) {
   border-right: 1px solid var(--pn-border-soft);
   display: flex;
   flex-direction: column;
+  position: sticky;
+  top: 0;
   height: 100vh;
+  overflow-y: auto;
 }
 
 .sb-logo {
@@ -103,39 +114,50 @@ function navTo(key) {
 }
 
 .sb-logo-icon {
-  width: 32px;
-  height: 32px;
+  width: 32px; height: 32px;
   border-radius: 8px;
   background: var(--pn-orange-soft);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border: 1px solid rgba(195,163,67,.3);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
 }
+.sb-brand { font-size: 15px; font-weight: 600; color: var(--pn-text); }
+.sb-sub   { font-size: 12px; color: var(--pn-orange); letter-spacing: .06em; }
 
-.sb-brand { font-size: 14px; font-weight: 600; }
-.sb-sub { font-size: 10px; color: var(--pn-orange); }
 
 .sb-nav { padding: 10px 8px; flex: 1; }
 
 .sb-section {
-  font-size: 10px;
+  font-size: 15px;
   color: var(--pn-text-dim);
   text-transform: uppercase;
   padding: 10px 8px 4px;
 }
 
 .sb-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
   width: 100%;
   padding: 8px 10px;
   border-radius: 7px;
+  border: 1px solid transparent;
   background: transparent;
-  border: none;
   color: var(--pn-text-muted);
-  text-align: left;
+  font-size: 15px;
   cursor: pointer;
-  transition: 0.2s;
+  text-align: left;
+  transition: all .15s;
+  margin-bottom: 2px;
 }
 
+.sb-item svg { width: 15px; height: 15px; flex-shrink: 0; }
+.sb-item:hover { background: var(--pn-panel); color: var(--pn-text); }
+.sb-item.active {
+  background: var(--pn-orange-soft);
+  border-color: rgba(195,163,67,.2);
+  color: var(--pn-orange);
+}
 .sb-item:hover {
   background: var(--pn-panel);
   color: var(--pn-text);
@@ -146,6 +168,15 @@ function navTo(key) {
   color: var(--pn-orange);
 }
 
+.sb-badge {
+  margin-left: auto;
+  background: var(--pn-red);
+  color: #fff;
+  font-size: 12px;
+  padding: 1px 6px;
+  border-radius: 99px;
+}
+
 .sb-footer {
   display: flex;
   align-items: center;
@@ -154,15 +185,26 @@ function navTo(key) {
   border-top: 1px solid var(--pn-border-soft);
 }
 
-.sb-avatar {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: var(--pn-orange-soft);
+.sb-footer {
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: 11px;
+  gap: 8px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--pn-border-soft);
+}
+
+.sb-user-name { font-size: 13px; font-weight: 500; color: var(--pn-text); }
+.sb-user-role { font-size: 12px; color: var(--pn-text-dim); }
+
+
+.sb-avatar {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: var(--pn-orange-soft);
+  border: 1px solid rgba(195,163,67,.3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; color: var(--pn-orange); font-weight: 600;
+  flex-shrink: 0;
 }
 
 </style>
