@@ -1,11 +1,11 @@
 <script setup>
-// ─────────────────────────────────────────────
-// Substitua pelos seus imports reais depois
-// ─────────────────────────────────────────────
 import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import axios from 'axios'
+import { useProdutos, estoqueLabel } from '@/services/produtoService'
+
+const { produtosVisiveis, mostrarExtras, loading, toggleProdutos } = useProdutos()
+
 
 // Recharts equivalente para Vue → use vue-chartjs
 import { Bar } from 'vue-chartjs'
@@ -42,34 +42,6 @@ const kpiData = {
 
 const kpi = computed(() => kpiData[canalAtivo.value])
 
-const produtosIniciais = [
-  { id: 1, emoji: '🍞', nome: 'Pão Francês',     categoria: 'Pães tradicionais', precoInd: 'R$0,45', precoVar: 'R$0,89', estoque: 'ok',  cor: 'br' },
-  { id: 2, emoji: '🥐', nome: 'Croissant Butter', categoria: 'Congelados',        precoInd: 'R$2,10', precoVar: 'R$4,50', estoque: 'mid', cor: 'pt' },
-  { id: 3, emoji: '🧁', nome: 'Cupcake Choco',   categoria: 'Confeitaria',       precoInd: 'R$3,20', precoVar: 'R$7,90', estoque: 'low', cor: 'cr' },
-  { id: 4, emoji: '🥖', nome: 'Baguete Rústica',  categoria: 'Pães especiais',   precoInd: 'R$1,80', precoVar: 'R$3,90', estoque: 'ok',  cor: 'bf' },
-]
-
-const produtos    = ref([...produtosIniciais])
-const loading     = ref(false)
-const jaCarregou  = ref(false)
-const estoqueLabel = { ok: 'Estoque OK', mid: 'Estoque médio', low: 'Estoque baixo' }
-
-async function atualizarProdutos() {
-  if (jaCarregou.value) return
-  loading.value = true
-
-  try {
-    const { data } = await axios.get('/suggestions.json') // ← axios direto, sem service
-    const idsExistentes = new Set(produtos.value.map(p => p.id))
-    const novos = data.filter(p => !idsExistentes.has(p.id))
-    produtos.value = [...produtos.value, ...novos]
-    jaCarregou.value = true
-  } catch (err) {
-    console.error('Erro:', err.message)
-  } finally {
-    loading.value = false
-  }
-}
 // ─────────────────────────────────────────────
 // Produção (fictício — substitua por store/API)
 // ─────────────────────────────────────────────
@@ -247,29 +219,45 @@ onMounted(() => {
         <div class="card-box">
           <div class="box-header">
             <span class="box-title">Menu de Produtos</span>
-
-            <button class="btn-atualizar" :disabled="loading || jaCarregou" @click="atualizarProdutos">
-              <span v-if="loading">Carregando...</span>
-              <span v-else-if="jaCarregou">✓ Atualizado</span>
-              <span v-else>↻ Atualizar</span>
-            </button>
-          </div>
+         <button class="btn-toggle" :disabled="loading" @click="toggleProdutos">
+  <span v-if="loading" class="btn-content">
+    <svg class="spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+    </svg>
+    Carregando...
+  </span>
+  <span v-else-if="mostrarExtras" class="btn-content">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="18 15 12 9 6 15"/>
+    </svg>
+    Ver menos
+  </span>
+  <span v-else class="btn-content">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="6 9 12 15 18 9"/>
+    </svg>
+    Ver todos
+  </span>
+</button>
+        </div>
+         
           <div class="prod-grid">
             <div
-              v-for="p in produtos"
-              :key="p.id"
+              v-for="produto in produtosVisiveis"
+              :key="produto.id"
               class="prod-card"
             >
-              <div class="prod-img" :class="`prod-img--${p.cor}`">{{ p.emoji }}</div>
+            
+              <div class="prod-img" :class="`prod-img--${produto.cor}`">{{ produto.emoji }}</div>
               <div class="prod-body">
-                <div class="prod-name">{{ p.nome }}</div>
-                <div class="prod-cat">{{ p.categoria }}</div>
+                <div class="prod-name">{{ produto.nome }}</div>
+                <div class="prod-cat">{{ produto.categoria }}</div>
                 <div class="prod-prices">
-                  <span class="price-pill price-pill--ind">Ind {{ p.precoInd }}</span>
-                  <span class="price-pill price-pill--var">Var {{ p.precoVar }}</span>
+                  <span class="price-pill price-pill--ind">Ind {{ produto.precoInd }}</span>
+                  <span class="price-pill price-pill--var">Var {{ produto.precoVar }}</span>
                 </div>
-                <span class="stock-badge" :class="`stock-badge--${p.estoque}`">
-                  ● {{ estoqueLabel[p.estoque] }}
+                <span class="stock-badge" :class="`stock-badge--${produto.estoque}`">
+                  ● {{ estoqueLabel[produto.estoque] }}
                 </span>
               </div>
             </div>
@@ -572,32 +560,50 @@ onMounted(() => {
 .stock-badge--ok  { background: var(--pn-green-soft);    color: var(--pn-green); }
 .stock-badge--mid { background: rgba(255,203,57,.12);     color: var(--pn-yellow); }
 .stock-badge--low { background: rgba(245,54,92,.12);      color: var(--pn-red); }
+.btn-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(195, 163, 67, 0.4);
+  background: rgba(195, 163, 67, 0.08);
+  color: #c3a343;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
 
-.menu-header {
+.btn-toggle:hover:not(:disabled) {
+  background: rgba(195, 163, 67, 0.18);
+  border-color: #c3a343;
+  color: #ffd60a;
+}
+
+.btn-toggle:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-content {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
+  gap: 6px;
 }
 
-.btn-atualizar {
-  background: transparent;
-  border: 1px solid #c3a343;
-  color: #c3a343;
-  padding: 5px 14px;
-  border-radius: 20px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: all .2s;
+.btn-content svg {
+  width: 14px;
+  height: 14px;
 }
 
-.btn-atualizar:hover:not(:disabled) {
-  background: rgba(195, 163, 67, 0.1);
+/* animação de loading */
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
-.btn-atualizar:disabled {
-  opacity: 0.5;
-  cursor: default;
+.spin {
+  animation: spin 0.8s linear infinite;
 }
 /* ── GRÁFICO ── */
 .chart-legend {
