@@ -1,42 +1,54 @@
 <script setup>
-    import { ref, computed, onMounted } from 'vue'
-    import { ITEM_CATEGORIES } from '@/constants'
+import { ref, computed, onMounted } from 'vue'
+import { ITEM_CATEGORIES } from '@/constants'
 
-    const emit = defineEmits(['add-item'])
+const emit = defineEmits(['add-item'])
 
-    const name = ref('')
-    const price = ref(null)
-    const category = ref(ITEM_CATEGORIES[0])
-    const available = ref(true)
-    const nameInput = ref(null)
+const name = ref('')
+const priceInd = ref(null)
+const priceVar = ref(null)
+const category = ref(ITEM_CATEGORIES[0])
+const available = ref(true)
+const selectedEmoji = ref('🍞')
+const nameInput = ref(null)
 
-    const isFormValid = computed(
-        () => name.value !== '' && price.value != null && price.value > 0 && category.value !== ''
-    )
+const EMOJI_OPTIONS = ['🍞', '🥐', '🧀', '🍗', '🍕', '🌮', '🍔', '🥪', '🧁', '🍰', '🥞', '🍩', '🥨', '🥖']
 
-    onMounted(() => {
-        nameInput.value?.focus()
+const isFormValid = computed(
+    () =>
+        name.value !== '' &&
+        priceInd.value != null && priceInd.value > 0 &&
+        priceVar.value != null && priceVar.value > 0 &&
+        category.value !== ''
+)
+
+onMounted(() => {
+    nameInput.value?.focus()
+})
+
+function submitForm() {
+    if (!isFormValid.value) return
+
+    emit('add-item', {
+        id: crypto.randomUUID(),
+        nome: name.value,
+        precoInd: `R$${priceInd.value.toFixed(2)}`,
+        precoVar: `R$${priceVar.value.toFixed(2)}`,
+        categoria: category.value,
+        estoque: 'ok',
+        emoji: selectedEmoji.value
     })
+    resetForm()
+}
 
-    function submitForm() {
-        if (!isFormValid.value) return
-
-        emit('add-item', {
-            id: crypto.randomUUID(),
-          nome: name.value,
-          precoInd: `R$${price.value.toFixed(2)}`,
-          precoVar: `R$${(price.value * 2).toFixed(2)}`,
-          categoria: category.value,
-          estoque: 'ok',
-          emoji: '🍞' 
-        })
-          function resetForm() {
-            name.value = ''
-            price.value = null
-            category.value = ''
-            available.value = true
-    }
-    }
+function resetForm() {
+    name.value = ''
+    priceInd.value = null
+    priceVar.value = null
+    category.value = ITEM_CATEGORIES[0]
+    available.value = true
+    selectedEmoji.value = '🍞'
+}
 </script>
 
 <template>
@@ -51,6 +63,7 @@
             </div>
 
             <form @submit.prevent="submitForm">
+                <!-- Nome -->
                 <div class="mb-3">
                     <label for="name" class="pn-label">Nome</label>
                     <input
@@ -59,25 +72,42 @@
                         v-model.trim="name"
                         type="text"
                         class="form-control"
-                        placeholder="Ex: Pizza Calabresa"
+                        placeholder="Ex: Pão de queijo"
                         required
                     />
                 </div>
 
-                <div class="mb-3">
-                    <label for="price" class="pn-label">Preço (R$)</label>
-                    <input
-                        id="price"
-                        v-model.number="price"
-                        type="number"
-                        class="form-control"
-                        min="0.01"
-                        step="0.01"
-                        placeholder="0,00"
-                        required
-                    />
+                <!-- Preços -->
+                <div class="row g-2 mb-3">
+                    <div class="col-6">
+                        <label for="priceInd" class="pn-label">Preço Ind. (R$)</label>
+                        <input
+                            id="priceInd"
+                            v-model.number="priceInd"
+                            type="number"
+                            class="form-control"
+                            min="0.01"
+                            step="0.01"
+                            placeholder="0,00"
+                            required
+                        />
+                    </div>
+                    <div class="col-6">
+                        <label for="priceVar" class="pn-label">Preço Var. (R$)</label>
+                        <input
+                            id="priceVar"
+                            v-model.number="priceVar"
+                            type="number"
+                            class="form-control"
+                            min="0.01"
+                            step="0.01"
+                            placeholder="0,00"
+                            required
+                        />
+                    </div>
                 </div>
 
+                <!-- Categoria -->
                 <div class="mb-3">
                     <label for="category" class="pn-label">Categoria</label>
                     <select id="category" v-model="category" class="form-select" required>
@@ -88,6 +118,27 @@
                     </select>
                 </div>
 
+                <!-- Emoji picker -->
+                <div class="mb-3">
+                    <label class="pn-label d-block mb-2">Emoji do item</label>
+                    <div class="d-flex flex-wrap gap-1">
+                        <button
+                            v-for="emoji in EMOJI_OPTIONS"
+                            :key="emoji"
+                            type="button"
+                            class="btn btn-sm emoji-btn"
+                            :class="selectedEmoji === emoji ? 'btn-primary' : 'btn-outline-secondary'"
+                            @click="selectedEmoji = emoji"
+                        >
+                            {{ emoji }}
+                        </button>
+                    </div>
+                    <div class="mt-2 pn-soft small">
+                        Selecionado: <span class="fs-5">{{ selectedEmoji }}</span>
+                    </div>
+                </div>
+
+                <!-- Disponível -->
                 <div class="form-check mb-3">
                     <input
                         id="available"
@@ -111,3 +162,11 @@
         </div>
     </div>
 </template>
+
+<style scoped>
+.emoji-btn {
+    font-size: 1.2rem;
+    padding: 0.25rem 0.4rem;
+    line-height: 1;
+}
+</style>

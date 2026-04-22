@@ -1,5 +1,5 @@
 <script setup>
-    import { formatarMoeda } from '@/utils/formatarMoeda';
+    import { formatBRL } from '@/utils/formatarMoeda';
 
     defineProps({
         totalItems: {
@@ -43,7 +43,7 @@
                     <span class="pn-kpi-icon">R$</span>
                     Preço médio
                 </div>
-                <div class="pn-kpi-value">{{ formatarMoeda(averagePrice) }}</div>
+                <div class="pn-kpi-value">{{ formatBRL(averagePrice) }}</div>
             </div>
         </div>
     </div>

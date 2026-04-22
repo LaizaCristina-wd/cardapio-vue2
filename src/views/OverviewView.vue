@@ -132,8 +132,7 @@ onMounted(() => {
 
       <div class="db-topbar">
         <div>
-          <h1 class="db-page-title">Visão Geral</h1>
-          <p class="db-page-sub">Segunda-feira, 20 de abril de 2026</p>
+          <h1 class="db-page-title">Visão Geral</h1> <span class="page-date">{{ new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) }}</span>
         </div>
         <div class="topbar-right">
           <div class="canal-tabs">

@@ -1,16 +1,8 @@
-export function formatarMoeda(valor){
- if (!valor) return ""
+const brl = new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+})
 
-  valor = valor
-    .toString()
-    .replace(/[^\d]/g, "")
-
- if (!valor) return ""
-  valor = (Number(valor) / 100).toFixed(2)
-
-  valor = valor
-    .replace(".", ",")
-    .replace(/\B(?=(\d{3})+(?!\d))/g, ".")
-
-  return ` R$ ${valor}`
+export function formatBRL(value) {
+    return brl.format(Number(value) || 0)
 }
