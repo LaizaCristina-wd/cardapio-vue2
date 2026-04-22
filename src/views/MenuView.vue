@@ -5,6 +5,7 @@ import CategoryFilter from '@/components/CategoryFilter.vue'
 import MenuSummary from '@/components/MenuSummary.vue'
 import { NOTIFY, ALL_CATEGORY } from '@/constants'
 import { useProdutos } from '@/services/produtoService'
+import MenuItem from '@/components/MenuItem.vue'
 
 const {
   produtosVisiveis,
@@ -143,48 +144,14 @@ const corEmoji     = { br: '🍞', pt: '🥐', cr: '🧁', bf: '🥖' }
         <div v-if="apiError" class="api-error">⚠ {{ apiError }}</div>
 
         <!-- Grid de cards -->
-        <div v-if="filteredItems.length" class="prod-grid">
-          <div
-            v-for="item in filteredItems"
-            :key="item.id"
-            class="prod-card"
-          >
-            <MenuItem :item="item" @remove-item="removeItem" />
-
-            <div class="prod-img" :class="`prod-img--${item.cor || 'br'}`">
-              {{ item.emoji || corEmoji[item.cor] || '🍞' }}
-            </div>
-
-            <div class="prod-body">
-              <div class="prod-name">{{ item.name || item.nome }}</div>
-              <div class="prod-cat">{{ item.category || item.categoria }}
-              </div>
-
-              <div class="prod-prices">
-                <span class="price-pill price-pill--ind">Ind {{ item.precoInd || `R$${item.price?.toFixed(2)}` }}</span>
-                <span class="price-pill price-pill--var">Var {{ item.precoVar }}</span>
-              </div>
-
-              <span class="stock-badge" :class="`stock-badge--${item.estoque || 'ok'}`">
-                ● {{ estoqueLabel[item.estoque] || 'Estoque OK' }}
-              </span>
-            </div>
-
-           
-            <div class="prod-actions">
-              <button class="btn-delete" @click="removeItem(item.id)" title="Remover">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polyline points="3 6 5 6 21 6"/>
-                  <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
-                  <path d="M10 11v6M14 11v6"/>
-                  <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
-                </svg>
-                Remover
-              </button>
-            </div>
-           
+      <div v-if="filteredItems.length" class="prod-grid">
+            <MenuItem
+              v-for="item in filteredItems"
+              :key="item.id"
+              :item="item"
+              @remove-item="removeItem"
+            />
           </div>
-        </div>
 
         <!-- Empty state -->
         <div v-else class="empty-state">
@@ -470,62 +437,6 @@ const corEmoji     = { br: '🍞', pt: '🥐', cr: '🧁', bf: '🥖' }
   font-size: 13px;
   margin-bottom: 16px;
 }
-
-/* ── Grid de cards ── */
-.prod-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 16px;
-}
-
-.prod-card {
-  background: #002952;
-  border: 1px solid #003566;
-  border-radius: 12px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  transition: border-color .2s, transform .2s;
-}
-.prod-card:hover { border-color: #c3a343; transform: translateY(-2px); }
-
-.prod-img {
-  height: 90px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 38px;
-}
-.prod-img--br { background: linear-gradient(135deg, #1a3a2a, #0d2418); }
-.prod-img--pt { background: linear-gradient(135deg, #1a2a3a, #0d1824); }
-.prod-img--cr { background: linear-gradient(135deg, #2a1a2a, #1a0d1a); }
-.prod-img--bf { background: linear-gradient(135deg, #2a2a1a, #1a1a0d); }
-
-.prod-body {
-  padding: 12px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.prod-name { font-size: 14px; font-weight: 600; color: #c0ccd8; }
-.prod-cat  { font-size: 11px; color: #415a77; }
-
-.prod-prices { display: flex; gap: 6px; flex-wrap: wrap; }
-
-.price-pill {
-  font-size: 11px;
-  font-weight: 600;
-  padding: 2px 8px;
-  border-radius: 20px;
-}
-.price-pill--ind { background: rgba(0,53,102,.6); color: #7aadda; }
-.price-pill--var { background: rgba(195,163,67,.15); color: #c3a343; }
-
-.stock-badge       { font-size: 11px; font-weight: 600; }
-.stock-badge--ok   { color: #4ade80; }
-.stock-badge--mid  { color: #fbbf24; }
-.stock-badge--low  { color: #f87171; }
 
 /* ── Ação do card ── */
 .prod-actions {
