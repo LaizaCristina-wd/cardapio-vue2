@@ -1,7 +1,6 @@
 <script setup>
 import { inject } from 'vue'
 import { useStore } from 'vuex'
-import { formatBRL } from '@/utils/formatarMoeda'
 import { NOTIFY } from '@/constants'
 
 const props = defineProps({
@@ -30,7 +29,7 @@ const estoqueLabel = {
 }
 
 function addToCart() {
-    if (props.item.estoque !== 'ok') {
+    if (props.item.estoque === 'low') {
         notify(`"${props.item.nome}" indisponível`, NOTIFY.ERROR)
         return
     }
@@ -39,6 +38,7 @@ function addToCart() {
         name: props.item.nome,
         price: props.item.precoInd,
         priceVar: props.item.precoVar,
+        estoque: props.item.estoque,
     })
     notify(`"${props.item.nome}" adicionado aos pedidos`, NOTIFY.SUCCESS)
 }
@@ -55,8 +55,8 @@ function addToCart() {
             <div class="prod-cat">{{ item.categoria }}</div>
 
             <div class="prod-prices">
-                <span class="price-pill price-pill--ind">Ind {{ formatBRL(item.precoInd) }}</span>
-                <span class="price-pill price-pill--var">Var {{ formatBRL(item.precoVar) }}</span>
+                <span class="price-pill price-pill--ind">Ind {{ item.precoInd }}</span>
+                <span class="price-pill price-pill--var">Var {{ item.precoVar}}</span>
             </div>
 
                     <span class="stock-badge" :class="`stock-badge--${item.estoque ?? 'ok'}`">
@@ -80,7 +80,7 @@ function addToCart() {
 
                 <button
                     class="btn-add"
-                    :disabled="item.estoque !== 'ok'"
+                    :disabled="item.estoque === 'low'"
                     @click="addToCart"
                 >
                     + Pedido

@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { ITEM_CATEGORIES } from '@/constants'
+import { estoqueLabel } from '@/services/produtoService'
 
 const emit = defineEmits(['add-item'])
 
@@ -8,7 +9,7 @@ const name = ref('')
 const priceInd = ref(null)
 const priceVar = ref(null)
 const category = ref(ITEM_CATEGORIES[0])
-const available = ref(true)
+const estoque = ref('ok')
 const selectedEmoji = ref('🍞')
 const nameInput = ref(null)
 
@@ -35,7 +36,7 @@ function submitForm() {
         precoInd: `R$${priceInd.value.toFixed(2)}`,
         precoVar: `R$${priceVar.value.toFixed(2)}`,
         categoria: category.value,
-        estoque: 'ok',
+        estoque: estoque.value,
         emoji: selectedEmoji.value
     })
     resetForm()
@@ -46,7 +47,7 @@ function resetForm() {
     priceInd.value = null
     priceVar.value = null
     category.value = ITEM_CATEGORIES[0]
-    available.value = true
+    estoque.value = 'ok'
     selectedEmoji.value = '🍞'
 }
 </script>
@@ -137,20 +138,21 @@ function resetForm() {
                         Selecionado: <span class="fs-5">{{ selectedEmoji }}</span>
                     </div>
                 </div>
-
-                <!-- Disponível -->
-                <div class="form-check mb-3">
-                    <input
-                        id="available"
-                        v-model="available"
-                        type="checkbox"
-                        class="form-check-input"
-                    />
-                    <label class="form-check-label pn-soft small" for="available">
-                        Disponível para pedido
+                <div class="mb-3">
+                    <label for="estoque" class="form-label pn-soft small">
+                        Nível de estoque
                     </label>
-                </div>
 
+                    <select
+                        id="estoque"
+                        v-model="estoque"
+                        class="form-select"
+                    >
+                        <option value="ok">Estoque OK</option>
+                        <option value="mid">Estoque médio</option>
+                        <option value="low">Estoque baixo</option>
+                    </select>
+                </div>
                 <button
                     type="submit"
                     class="btn btn-primary w-100"

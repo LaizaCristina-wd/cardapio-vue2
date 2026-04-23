@@ -36,10 +36,21 @@ const filteredItems = computed(() =>
         (i.category || i.categoria) === activeCategory.value
       )
 )
-const availableCount = computed(() => items.value.filter(i => i.available).length)
+const availableCount = computed(() => items.value.filter(i => i.estoque === 'ok' || i.estoque === 'mid').length)
 const averagePrice   = computed(() => {
   if (!filteredItems.value.length) return 0
-  return filteredItems.value.reduce((acc, i) => acc + (i.price || 0), 0) / filteredItems.value.length
+    const total = filteredItems.value.reduce((acc, item) => {
+    const preco = Number(
+      item.precoInd
+        .replace('R$', '')
+        .replace(',', '.')
+        .trim()
+    )
+
+    return acc + preco
+  }, 0)
+
+  return total / filteredItems.value.length
 })
 
 // ── Watchers ─────────────────────────────────────────────
@@ -70,10 +81,6 @@ async function loadSuggestions() {
     notify(`Erro: ${err.message}`, NOTIFY.ERROR)
   }
 }
-
-// ── Helpers visuais ───────────────────────────────────────
-const estoqueLabel = { ok: 'Estoque OK', mid: 'Estoque médio', low: 'Estoque baixo' }
-const corEmoji     = { br: '🍞', pt: '🥐', cr: '🧁', bf: '🥖' }
 </script>
 
 <template>
@@ -439,6 +446,12 @@ const corEmoji     = { br: '🍞', pt: '🥐', cr: '🧁', bf: '🥖' }
 }
 
 /* ── Ação do card ── */
+.prod-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+}
 .prod-actions {
   border-top: 1px solid #003566;
 }

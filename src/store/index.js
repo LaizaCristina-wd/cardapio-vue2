@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
 import auth from './modules/auth'
+import cart from './modules/cart'
 
 const STORAGE_KEY = 'selo-real-vuex'
 
@@ -15,8 +16,9 @@ function loadPersisted() {
 const persisted = loadPersisted()
 
 const store = createStore({
-    modules: { auth },
+    modules: { auth, cart },
 })
+if (persisted?.cart) store.commit('cart/HYDRATE', persisted.cart)
 
 if (persisted?.auth) store.commit('auth/HYDRATE', persisted.auth)
 
@@ -26,6 +28,7 @@ store.subscribe((_mutation, state) => {
     persistTimer = setTimeout(() => {
         persistTimer = null
         const snapshot = {
+             cart: { items: state.cart.items },
             auth: { user: state.auth.user },
         }
         localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot))

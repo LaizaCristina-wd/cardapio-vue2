@@ -25,7 +25,7 @@ const navItems = [
   { key: 'producao',  label: 'Produção',        to: '/producao'   },
   { key: 'menu',      label: 'Gestão de Menu',  to: '/menu'       },
   { key: 'logistica', label: 'Logística',       to: '/logistica'  },
-  { key: 'relatorios',label: 'Relatórios',      to: '/relatorios' },
+  { key: 'relatorio', label: 'Relatórios',      to: '/relatorio' },
 ]
 
 function navTo(key) {
@@ -64,7 +64,7 @@ function navTo(key) {
           <svg v-if="item.key === 'producao'"   viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 0-14.14 0M4.93 19.07a10 10 0 0 0 14.14 0"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
           <svg v-if="item.key === 'menu'"       viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>
           <svg v-if="item.key === 'logistica'"  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 3h15v13H1zM16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-          <svg v-if="item.key === 'relatorios'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          <svg v-if="item.key === 'relatorio'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
 
         {{ item.label }}
        </RouterLink>
