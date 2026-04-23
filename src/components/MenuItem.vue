@@ -4,27 +4,19 @@ import { useStore } from 'vuex'
 import { NOTIFY } from '@/constants'
 import '@/assets/theme.css'
 
-// ────────────────────────────────────────────────────────────────────
+
 // Props & Emits
-// ────────────────────────────────────────────────────────────────────
 const props = defineProps({
   item: {
     type: Object,
     required: true,
   },
 })
-
 const emit = defineEmits(['remove-item'])
-
-// ────────────────────────────────────────────────────────────────────
 // Injeções
-// ────────────────────────────────────────────────────────────────────
 const store = useStore()
 const notify = inject('notify')
-
-// ────────────────────────────────────────────────────────────────────
 // Constantes
-// ────────────────────────────────────────────────────────────────────
 const corEmoji = {
   br: '🍞',
   pt: '🥐',
@@ -37,10 +29,7 @@ const estoqueLabel = {
   mid: 'Estoque médio',
   low: 'Estoque baixo',
 }
-
-// ────────────────────────────────────────────────────────────────────
 // Métodos
-// ────────────────────────────────────────────────────────────────────
 function addToCart() {
   if (props.item.estoque === 'low') {
     notify(`"${props.item.nome}" indisponível`, NOTIFY.ERROR)

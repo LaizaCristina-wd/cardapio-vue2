@@ -174,7 +174,6 @@ function submitOrder() {
                     </div>
 
                     <div class="lg-divider"></div>
-
                     <!-- Seleção de Transporte -->
                     <div class="lg-field">
                         <label class="lg-label">Meio de transporte</label>

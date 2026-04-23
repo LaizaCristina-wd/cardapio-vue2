@@ -1,10 +1,8 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { ITEM_CATEGORIES } from '@/constants'
-import { estoqueLabel } from '@/services/produtoService'
 
 const emit = defineEmits(['add-item'])
-
 const name = ref('')
 const priceInd = ref(null)
 const priceVar = ref(null)
@@ -12,7 +10,6 @@ const category = ref(ITEM_CATEGORIES[0])
 const estoque = ref('ok')
 const selectedEmoji = ref('🍞')
 const nameInput = ref(null)
-
 const EMOJI_OPTIONS = ['🍞', '🥐', '🧀', '🍗', '🍕', '🌮', '🍔', '🥪', '🧁', '🍰', '🥞', '🍩', '🥨', '🥖']
 
 const isFormValid = computed(
@@ -165,10 +162,3 @@ function resetForm() {
     </div>
 </template>
 
-<style scoped>
-.emoji-btn {
-    font-size: 1.2rem;
-    padding: 0.25rem 0.4rem;
-    line-height: 1;
-}
-</style>

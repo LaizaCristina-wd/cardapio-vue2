@@ -17,14 +17,13 @@ const initials = computed(() => {
     .toUpperCase()
 })
 
-// ────────────────────────────────────────────────────────────────────
+
 // Estado
-// ────────────────────────────────────────────────────────────────────
+
 const activeNav = ref('allview')
 
-// ────────────────────────────────────────────────────────────────────
 // Constantes
-// ────────────────────────────────────────────────────────────────────
+
 const NAV_ITEMS = [
   { key: 'allview', label: 'Visão Geral', to: '/Overview', icon: 'grid' },
   { key: 'producao', label: 'Produção', to: '/producao', icon: 'settings' },
@@ -33,9 +32,8 @@ const NAV_ITEMS = [
   { key: 'relatorio', label: 'Relatórios', to: '/relatorio', icon: 'chart' },
 ]
 
-// ────────────────────────────────────────────────────────────────────
 // Métodos
-// ────────────────────────────────────────────────────────────────────
+
 const navTo = (key) => {
   activeNav.value = key
 }

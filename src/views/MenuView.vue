@@ -87,8 +87,6 @@ async function loadSuggestions() {
 <template>
   <div class="menu-page">
     <div class="layout">
-
-      <!-- ── Aside esquerdo: formulário ─────────── -->
       <aside class="form-aside">
         <div class="aside-inner">
           <div class="aside-header">
@@ -101,11 +99,7 @@ async function loadSuggestions() {
           <MenuForm @add-item="addItem" />
         </div>
       </aside>
-
-      <!-- ── Coluna principal ──────────────────── -->
       <div class="main-col">
-
-        <!-- Cabeçalho -->
         <div class="page-header">
           <div>
             <h1 class="page-title">Gestão de Menu</h1>
@@ -124,15 +118,11 @@ async function loadSuggestions() {
             </button>
           </div>
         </div>
-
-        <!-- Resumo -->
         <MenuSummary
           :total-items="items.length"
           :available-items="availableCount"
           :average-price="averagePrice"
         />
-
-        <!-- ── Filtro de categorias ── -->
         <div class="filter-section">
           <div class="filter-label">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="12" height="12">
@@ -147,7 +137,6 @@ async function loadSuggestions() {
             />
           </div>
         </div>
-
         <!-- Erro da API -->
         <div v-if="apiError" class="api-error">⚠ {{ apiError }}</div>
 

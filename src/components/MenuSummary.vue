@@ -2,9 +2,8 @@
 import { formatBRL } from '@/utils/formatarMoeda'
 import '@/assets/theme.css'
 
-// ────────────────────────────────────────────────────────────────────
 // Props
-// ────────────────────────────────────────────────────────────────────
+
 defineProps({
   totalItems: {
     type: Number,
