@@ -17,33 +17,33 @@ const routes = [
     component: HomeView
   },
   {
-  path: '/Overview',
-  name: 'Overview',
-  component: OverviewView,
-   meta: { requiresSidebar: true } 
+    path: '/Overview',
+    name: 'Overview',
+    component: OverviewView,
+    meta: { requiresSidebar: true } 
 }, 
   {
     path: '/producao',
     name: 'producao',
     component: ProductionView,
-     meta: { requiresSidebar: true }
+    meta: { requiresSidebar: true }
   },
   {
     path: '/menu',
     name: 'menu',
     component: MenuView,
-     meta: { requiresSidebar: true }
+    meta: { requiresSidebar: true }
   },
   {
     path: '/logistica',
     name: 'logistica',
     component: LogisticaView,
-     meta: { requiresSidebar: true }
+    meta: { requiresSidebar: true }
   },
   {
-    path: '/relatorio',
-    name: 'relatorio',
-    component: RelatorioView,
+     path: '/relatorio',
+     name: 'relatorio',
+     component: RelatorioView,
      meta: { requiresSidebar: true }
   }
  
